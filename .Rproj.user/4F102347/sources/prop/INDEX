@@ -20,6 +20,7 @@
 %2Frdx%2Fprojects%2Fdb_singlecell%2FNAMESPACE="ED69A4CA"
 %2Frdx%2Fprojects%2Fdb_singlecell%2FR%2Fcellphonedb_utilities.R="C230E935"
 %2Frdx%2Fprojects%2Fdb_singlecell%2FRead-and-delete-me="8F8E8389"
+%2Frdx%2Fprojects%2Fdbsinglecell%2F.gitignore="C599A540"
 %2Frdx%2Fprojects%2Fdbsinglecell%2FDESCRIPTION="B343C981"
 %2Frdx%2Fprojects%2Fdbsinglecell%2FNAMESPACE="741250F7"
 %2Frdx%2Fprojects%2Fdbsinglecell%2FR%2FNewMeta.R="DC147442"
@@ -38,3 +39,5 @@
 %2Frdx%2Fprojects%2Fdbsinglecell%2FRead-and-delete-me="59DFEF3E"
 %2Frdx%2Fprojects%2Fdbsinglecell%2F_pkgdown.yml="ADDF398F"
 %2Frdx%2Fprojects%2Fdbsinglecell%2Fman%2Fcellphonedb_summary.Rd="896AF6F0"
+%2Frdx%2Fprojects%2Fdth%2F.gitignore="5B8D61C3"
+%2Frdx%2Fprojects%2Fdth%2F_pkgdown.yml="3B1E1224"

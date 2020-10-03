@@ -1,0 +1,33 @@
+destination: docs
+template:
+      params:
+        bootswatch: yeti
+navbar:
+  structure:
+    left:  [home, intro, reference, articles, tutorials, news]
+    right: [github, packages,main_site, twitter]
+  components:
+     twitter:
+       icon: "fab fa-twitter fa-lg"
+       href: http://twitter.com/deweybrooke1
+     main_site: 
+      icon: "fas fa-user-circle fa-lg"
+      text: Dewey Brooke
+      href: https://www.deweybrooke.org/
+     github: 
+      icon: "fab fa-github fa-lg"
+      href: https://github.com/dbrookeUAB/dth
+     packages: 
+      icon: "fab fa-r-project fa-lg"
+      text: Other Packages
+      menu:
+      - text: TCGAseq
+        href: https://tcgaseq.deweybrooke.org/
+      - text: GTEXseq
+        href: https://gtexseq.deweybrooke.org/
+      - text: GeCKO
+        href: https://gecko.deweybrooke.org/
+      - text: miknn
+        href: https://miknn.deweybrooke.org/
+      - text: dth
+        href: https://dth.deweybrooke.org/
