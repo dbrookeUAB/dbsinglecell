@@ -3,7 +3,7 @@
     "path": "/rdx/projects/dbsinglecell/.gitignore",
     "project_path": ".gitignore",
     "type": "gitignore",
-    "hash": "533853370",
+    "hash": "2687559386",
     "contents": "",
     "dirty": false,
     "created": 1601701760699.0,
@@ -11,11 +11,11 @@
     "relative_order": 3,
     "properties": {},
     "folds": "",
-    "lastKnownWriteTime": 1601702686,
+    "lastKnownWriteTime": 1601702974,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1601702686371,
+    "last_content_update": 1601702974856,
     "read_only": false,
     "read_only_alternatives": []
 }
