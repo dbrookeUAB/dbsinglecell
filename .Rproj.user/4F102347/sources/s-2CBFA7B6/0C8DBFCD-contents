@@ -1,0 +1,17 @@
+#' Easy Add Meta data to Seurat Object
+#'
+#' @param object
+#' @param meta
+#' @param col.name
+#'
+#' @return
+#' @export
+#' @import Seurat
+#'
+#' @examples
+NewMeta <- function(object, meta, col.name){
+  test <- meta[as.character(Seurat::Idents(object))]
+  names(test) <- colnames(object)
+  result <- Seurat::AddMetaData(object, test, col.name)
+  return(result)
+}

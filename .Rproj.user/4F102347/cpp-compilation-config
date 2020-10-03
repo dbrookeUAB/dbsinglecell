@@ -1,0 +1,20 @@
+{
+    "args": [
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk/usr/include",
+        "-I/Library/Developer/CommandLineTools/usr/lib/clang/11.0.0/include",
+        "-I/usr/local/Cellar/llvm/10.0.0_3/bin/../include/c++/v1",
+        "-I/usr/local/Cellar/llvm/10.0.0_3/lib/clang/10.0.0/include",
+        "-I/Library/Developer/CommandLineTools/SDKs/MacOSX10.14.sdk/usr/include",
+        "-I/Library/Frameworks/R.framework/Versions/3.6/Resources/library/Rcpp/include",
+        "-I/Library/Frameworks/R.framework/Resources/include",
+        "-DNDEBUG",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk",
+        "-I/usr/local/include",
+        "-fPIC"
+    ],
+    "pch": "Rcpp",
+    "is_cpp": true,
+    "hash": "15931292361600965640"
+}
