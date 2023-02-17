@@ -135,10 +135,10 @@ sparse2DT <- function(matrix){
 #' @importMatrix
 #'
 #' @examples
-sparse2DT.Seurat <- function(object){
+sparse2DT.Seurat <- function(object, assay = 'RNA', data = 'data'){
 
   # exporting normalized data
-  mat <- object@assays$RNA@data[, Cells(object)]
+  mat <- slot(slot(object, 'assays')[[assay]],data)
 
   result <- sparse2DT(mat)
   return(result)

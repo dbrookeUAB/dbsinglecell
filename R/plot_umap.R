@@ -41,8 +41,13 @@ pal_umap <- function(object, group_col, base_col = "#1E90FF", jitter = TRUE){
 #' @export
 #'
 #' @examples
-hcl_umap <- function(object,group_col, hcl_pal = 'Dark 3', jitter = TRUE,comp = 3){
-  col_levels <- object@meta.data[[group_col]]
+hcl_umap <- function(object,group_col = NULL, hcl_pal = 'Dark 3', jitter = TRUE,comp = 3){
+  if(is.null(group_col)){
+    col_levels <- Seurat::Idents(object)
+  } else {
+    col_levels <- object@meta.data[[group_col]]
+  }
+
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
     pal <- c('gray')
