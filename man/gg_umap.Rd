@@ -4,7 +4,7 @@
 \alias{gg_umap}
 \title{UMAP Palette using ggplot2 colors}
 \usage{
-gg_umap(object, group_col, jitter = TRUE, comp = 3)
+gg_umap(object, group_col, jitter = TRUE, comp = 3, alpha = 0.7)
 }
 \arguments{
 \item{comp}{integer setting the color complementarity to be used}

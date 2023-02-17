@@ -2,7 +2,7 @@
 % Please edit documentation in R/db_read10x.R
 \name{read10x_atlas}
 \alias{read10x_atlas}
-\title{Read10x v2}
+\title{Read10x Atlas}
 \usage{
 read10x_atlas(filepaths, project = "scRNAseq", meta = NULL)
 }
@@ -10,5 +10,5 @@ read10x_atlas(filepaths, project = "scRNAseq", meta = NULL)
 \item{meta}{meta data to include with the various datasets}
 }
 \description{
-Read10x v2
+Read10x Atlas
 }

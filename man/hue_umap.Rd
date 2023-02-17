@@ -4,7 +4,7 @@
 \alias{hue_umap}
 \title{UMAP Palette using soft hues}
 \usage{
-hue_umap(object, group_col, jitter = TRUE, comp = 3)
+hue_umap(object, group_col, jitter = TRUE, comp = 3, alpha = 0.8)
 }
 \arguments{
 \item{jitter}{integer setting the color complementary to be used}

@@ -20,19 +20,43 @@
 #' @import reticulate
 #'
 #' @examples
-HDBSCAN <- function(x,
-                    algorithm='best',
-                    alpha=1.0,
-                    approx_min_span_tree = TRUE,
-                    gen_min_span_tree=FALSE,
-                    leaf_size=40,
-                    metric='euclidean',
-                    prediction_data=TRUE,
-                    min_cluster_size =50,
-                    min_samples = 1,
-                    cluster_selection_epsilon = 0.5,
-                    cluster_selection_method = 'leaf',
-                    nThreads = parallel::detectCores()
+HDBSCAN <- function(object, ...){
+  UseMethod(generic = 'HDBSCAN', object = object)
+}
+
+#' Hierarchical Density-Based Spatial Clustering of Applications with Noise
+#'
+#' @param x
+#' @param algorithm
+#' @param alpha
+#' @param approx_min_span_tree
+#' @param gen_min_span_tree
+#' @param leaf_size
+#' @param metric
+#' @param prediction_data
+#' @param min_cluster_size
+#' @param min_samples
+#' @param cluster_selection_epsilon
+#' @param cluster_selection_method
+#' @param nThreads
+#'
+#' @return
+#' @export
+#'
+#' @examples
+HDBSCAN.default <- function(x,
+                           algorithm='best',
+                           alpha=1.0,
+                           approx_min_span_tree = TRUE,
+                           gen_min_span_tree=FALSE,
+                           leaf_size=30,
+                           metric='euclidean',
+                           prediction_data=TRUE,
+                           min_cluster_size =1000L,
+                           min_samples = 1L,
+                           cluster_selection_epsilon = 0.1,
+                           cluster_selection_method = 'leaf',
+                           nThreads = parallel::detectCores()-1
 ){
 
   hdbscan <- reticulate::import('hdbscan', delay_load = TRUE)
@@ -40,6 +64,7 @@ HDBSCAN <- function(x,
 
 
   clusterer <- hdbscan$HDBSCAN(algorithm = algorithm,
+                               allow_single_cluster = FALSE,
                                alpha = alpha,
                                prediction_data = prediction_data,
                                approx_min_span_tree = approx_min_span_tree,
@@ -55,17 +80,88 @@ HDBSCAN <- function(x,
 
 
 
-  clusterer$fit(x)
+  reticulate::py_main_thread_func(clusterer$fit(x))
+
 
   result <- list(
-    labels = factor(clusterer$labels_),
+    labels = clusterer$labels_,
     probabilities = clusterer$probabilities_,
     cluster_persistance = clusterer$cluster_persistence_,
     exemplars = clusterer$exemplars_,
     outlier_scores = clusterer$outlier_scores_)
 
-  levels(result$labels)[1] <- NA
   return(result)
+
+}
+
+#' Hierarchical Density-Based Spatial Clustering of Applications with Noise
+#'
+#' @param x
+#' @param algorithm
+#' @param alpha
+#' @param approx_min_span_tree
+#' @param gen_min_span_tree
+#' @param leaf_size
+#' @param metric
+#' @param prediction_data
+#' @param min_cluster_size
+#' @param min_samples
+#' @param cluster_selection_epsilon
+#' @param cluster_selection_method
+#' @param nThreads
+#'
+#' @return
+#' @export
+#'
+#' @examples
+HDBSCAN.matrix <- function(x,
+                    algorithm='best',
+                    alpha=1.0,
+                    approx_min_span_tree = TRUE,
+                    gen_min_span_tree=FALSE,
+                    leaf_size=30,
+                    metric='euclidean',
+                    prediction_data=TRUE,
+                    min_cluster_size =1000L,
+                    min_samples = 1L,
+                    cluster_selection_epsilon = 0.1,
+                    cluster_selection_method = 'leaf',
+                    nThreads = parallel::detectCores()-1
+){
+
+  hdbscan <- reticulate::import('hdbscan', delay_load = TRUE)
+
+
+
+  clusterer <- hdbscan$HDBSCAN(algorithm = algorithm,
+                               allow_single_cluster = FALSE,
+                               alpha = alpha,
+                               prediction_data = prediction_data,
+                               approx_min_span_tree = approx_min_span_tree,
+                               gen_min_span_tree = gen_min_span_tree,
+                               leaf_size = leaf_size,
+                               core_dist_n_jobs = nThreads,
+                               metric = metric,
+                               min_cluster_size = as.integer(min_cluster_size),
+                               min_samples = as.integer(min_samples),
+                               cluster_selection_epsilon =  cluster_selection_epsilon,
+                               cluster_selection_method = cluster_selection_method
+  )
+
+
+
+  reticulate::py_main_thread_func(clusterer$fit(x))
+
+
+  result <- list(
+    labels = clusterer$labels_,
+    probabilities = clusterer$probabilities_,
+    cluster_persistance = clusterer$cluster_persistence_,
+    exemplars = clusterer$exemplars_,
+    outlier_scores = clusterer$outlier_scores_)
+
+  return(result)
+
 }
 
 
@@ -101,13 +197,13 @@ HDBSCAN.Seurat <- function(object,
                            prediction_data = TRUE,
                            approx_min_span_tree = TRUE,
                            gen_min_span_tree=FALSE,
-                           leaf_size=40,
+                           leaf_size=30,
                            metric='euclidean',
-                           min_cluster_size =50,
-                           min_samples = 1,
-                           cluster_selection_epsilon = 0.5,
+                           min_cluster_size =1000L,
+                           min_samples = 1L,
+                           cluster_selection_epsilon = 0.1,
                            cluster_selection_method = 'leaf',
-                           nThreads = parallel::detectCores(),
+                           nThreads = parallel::detectCores()-1,
                            return_seurat = TRUE
 ){
 
@@ -134,7 +230,7 @@ HDBSCAN.Seurat <- function(object,
                                cluster_selection_epsilon =  cluster_selection_epsilon,
                                cluster_selection_method = cluster_selection_method
   )
-  clusterer$fit(x)
+  reticulate::py_main_thread_func(clusterer$fit(x))
 
   result <- list(
     labels = factor(clusterer$labels_),
@@ -143,14 +239,15 @@ HDBSCAN.Seurat <- function(object,
     exemplars = clusterer$exemplars_,
     outlier_scores = clusterer$outlier_scores_)
 
-  levels(result$labels)[1] <- NA
   if(return_seurat){
     object@misc$hdbscan <- result
-    object$cl <- factor(clusterer$labels_)
+    object$cl <- result$labels
     return(object)
   } else {
     return(result)
   }
-
-
+reticulate::py_de
+reticulate::py_run_string('del clusterer')
+reticulate::py_gc <- import("gc")
+reticulate::py_gc$collect()
 }

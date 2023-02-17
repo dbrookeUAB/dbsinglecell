@@ -4,7 +4,7 @@
 \alias{HDBSCAN.Seurat}
 \title{Hierarchical Density-Based Spatial Clustering of Applications with Noise}
 \usage{
-HDBSCAN.Seurat(
+\method{HDBSCAN}{Seurat}(
   object,
   reduction = "umap",
   dims = NULL,
@@ -13,13 +13,13 @@ HDBSCAN.Seurat(
   prediction_data = TRUE,
   approx_min_span_tree = TRUE,
   gen_min_span_tree = FALSE,
-  leaf_size = 40,
+  leaf_size = 30,
   metric = "euclidean",
-  min_cluster_size = 50,
-  min_samples = 1,
-  cluster_selection_epsilon = 0.5,
+  min_cluster_size = 1000L,
+  min_samples = 1L,
+  cluster_selection_epsilon = 0.1,
   cluster_selection_method = "leaf",
-  nThreads = parallel::detectCores(),
+  nThreads = parallel::detectCores() - 1,
   return_seurat = TRUE
 )
 }

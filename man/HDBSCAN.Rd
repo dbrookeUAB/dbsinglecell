@@ -4,21 +4,7 @@
 \alias{HDBSCAN}
 \title{Hierarchical Density-Based Spatial Clustering of Applications with Noise}
 \usage{
-HDBSCAN(
-  x,
-  algorithm = "best",
-  alpha = 1,
-  approx_min_span_tree = TRUE,
-  gen_min_span_tree = FALSE,
-  leaf_size = 40,
-  metric = "euclidean",
-  prediction_data = TRUE,
-  min_cluster_size = 50,
-  min_samples = 1,
-  cluster_selection_epsilon = 0.5,
-  cluster_selection_method = "leaf",
-  nThreads = parallel::detectCores()
-)
+HDBSCAN(object, ...)
 }
 \arguments{
 \item{prediction_data}{not sure what this is for. Will update later.}

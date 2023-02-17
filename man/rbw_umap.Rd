@@ -4,7 +4,7 @@
 \alias{rbw_umap}
 \title{UMAP palette using rainbow colors}
 \usage{
-rbw_umap(object, group_col, jitter = TRUE, comp = 3)
+rbw_umap(object, group_col, jitter = TRUE, comp = 3, alpha = 0.7)
 }
 \arguments{
 \item{comp}{integer setting the color complementary to be used}

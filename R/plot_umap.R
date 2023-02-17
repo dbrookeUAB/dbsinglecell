@@ -41,13 +41,8 @@ pal_umap <- function(object, group_col, base_col = "#1E90FF", jitter = TRUE){
 #' @export
 #'
 #' @examples
-hcl_umap <- function(object,group_col = NULL, hcl_pal = 'Dark 3', jitter = TRUE,comp = 3){
-  if(is.null(group_col)){
-    col_levels <- Seurat::Idents(object)
-  } else {
-    col_levels <- object@meta.data[[group_col]]
-  }
-
+hcl_umap <- function(object,group_col, hcl_pal = 'Dark 3',alpha = 0.7, jitter = TRUE,comp = 3){
+  col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
     pal <- c('gray')
@@ -59,7 +54,7 @@ hcl_umap <- function(object,group_col = NULL, hcl_pal = 'Dark 3', jitter = TRUE,
   if(jitter){
     new_order <- as.integer(unlist(sapply(1:jn, function(x) seq(x, n,jn))))
   }
-  pal <- c(pal, hcl.colors(n,palette = hcl_pal)[new_order])
+  pal <- c(pal, hcl.colors(n,palette = hcl_pal,alpha = alpha)[new_order])
   return(pal)
 }
 
@@ -74,7 +69,7 @@ hcl_umap <- function(object,group_col = NULL, hcl_pal = 'Dark 3', jitter = TRUE,
 #' @export
 #'
 #' @examples
-rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3){
+rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.7){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -87,7 +82,7 @@ rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3){
   if(jitter){
     new_order <- as.integer(unlist(sapply(1:jn, function(x) seq(x, n,jn))))
   }
-  pal <- c(pal,rainbow(57,s = 0.7,v = 0.8,alpha = 0.95)[new_order])
+  pal <- c(pal,rainbow(57,s = 0.7,v = 0.8,alpha = alpha)[new_order])
   return(pal)
 }
 
@@ -104,7 +99,7 @@ rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3){
 #' @import colorspace
 #'
 #' @examples
-hue_umap <- function(object,group_col, jitter = TRUE,comp = 3){
+hue_umap <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.8){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -117,13 +112,13 @@ hue_umap <- function(object,group_col, jitter = TRUE,comp = 3){
   if(jitter){
     new_order <- as.integer(unlist(sapply(1:jn, function(x) seq(x, n,jn))))
   }
-  pal <- c(pal, colorspace::sequential_hcl(n, h = c(0, 300), c = c(60, 60), l = 65)[new_order])
+  pal <- c(pal, colorspace::sequential_hcl(n, h = c(0, 300), c = c(60, 60),alpha = alpha, l = 65)[new_order])
   return(pal)
 }
 
-gg_color_hue <- function(n) {
+gg_color_hue <- function(n, alpha = 0.7) {
   hues = seq(15, 375, length = n + 1)
-  hcl(h = hues, l = 65, c = 100)[1:n]
+  hcl(h = hues, l = 65, c = 100,alpha = alpha)[1:n]
 }
 
 #' UMAP Palette using ggplot2 colors
@@ -137,7 +132,7 @@ gg_color_hue <- function(n) {
 #' @export
 #'
 #' @examples
-gg_umap <- function(object,group_col, jitter = TRUE,comp = 3){
+gg_umap <- function(object,group_col, jitter = TRUE,comp = 3,alpha = 0.7){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -150,7 +145,7 @@ gg_umap <- function(object,group_col, jitter = TRUE,comp = 3){
   if(jitter){
     new_order <- as.integer(unlist(sapply(1:jn, function(x) seq(x, n,jn))))
   }
-  pal <- c(pal, gg_color_hue(n)[new_order])
+  pal <- c(pal, gg_color_hue(n, alpha = alpha)[new_order])
   return(pal)
 }
 
