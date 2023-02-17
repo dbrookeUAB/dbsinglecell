@@ -4,7 +4,7 @@
 \alias{print.db_sce}
 \title{Print}
 \usage{
-print.db_sce(x, ...)
+\method{print}{db_sce}(x, ...)
 }
 \arguments{
 \item{...}{}

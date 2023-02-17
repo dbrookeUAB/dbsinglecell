@@ -194,8 +194,8 @@ db_counts <- function(matrix){
 
 db_sce <- setClass('db_sce',slots = c(metaData = 'data.table', geneData = 'data.table', assays = 'list'),
 
-                   prototype  = prototype(metaData = data.table(id = character(), nFeatures = integer(), nCounts = integer()),
-                                          geneData = data.table(gene_id = character(), gene_symbol = character()),
+                   prototype  = prototype(metaData = data.table::data.table(id = character(), nFeatures = integer(), nCounts = integer()),
+                                          geneData = data.table::data.table(gene_id = character(), gene_symbol = character()),
                                           assays = list()
                    )
 )

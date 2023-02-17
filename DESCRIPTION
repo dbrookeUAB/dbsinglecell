@@ -16,7 +16,7 @@ Imports: Rcpp, Matrix, data.table, doParallel, foreach, progress,
         uwot, viridis, SingleCellExperiment, reticulate
 LinkingTo: Rcpp, RcppArmadillo
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.2
+RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: yes
