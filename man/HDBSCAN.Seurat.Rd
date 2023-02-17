@@ -24,12 +24,9 @@ HDBSCAN.Seurat(
 )
 }
 \arguments{
-\item{prediction_data}{}
+\item{prediction_data}{not sure what this is for. Will update later.}
 
 \item{return_seurat}{logical to return the result within the orignal object or as the raw HDBSCAN result}
-}
-\value{
-
 }
 \description{
 Hierarchical Density-Based Spatial Clustering of Applications with Noise

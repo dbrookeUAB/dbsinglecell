@@ -7,10 +7,7 @@
 read10x_atlas(filepaths, project = "scRNAseq", meta = NULL)
 }
 \arguments{
-\item{meta}{}
-}
-\value{
-
+\item{meta}{meta data to include with the various datasets}
 }
 \description{
 Read10x v2

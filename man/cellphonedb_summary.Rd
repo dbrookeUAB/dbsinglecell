@@ -11,9 +11,6 @@ cellphonedb_summary(path, pvalue = "all")
 
 \item{pvalue}{setting this will return results less than it}
 }
-\value{
-
-}
 \description{
 CellPhoneDB Summary File
 }

@@ -9,9 +9,6 @@ gg_umap(object, group_col, jitter = TRUE, comp = 3)
 \arguments{
 \item{comp}{integer setting the color complementarity to be used}
 }
-\value{
-
-}
 \description{
 UMAP Palette using ggplot2 colors
 }

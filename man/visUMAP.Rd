@@ -25,9 +25,6 @@ visUMAP(
 \arguments{
 \item{verbose}{whether to print function messages}
 }
-\value{
-
-}
 \description{
 UWOT-UMAP
 }

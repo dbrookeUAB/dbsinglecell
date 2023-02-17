@@ -9,12 +9,6 @@ pal_umap(object, group_col, base_col = "#1E90FF", jitter = TRUE)
 \arguments{
 \item{jitter}{randomize the colors}
 }
-\value{
-
-}
 \description{
 Custom Palette for UMAP
-}
-\examples{
-
 }

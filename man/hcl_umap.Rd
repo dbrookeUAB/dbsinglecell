@@ -4,13 +4,10 @@
 \alias{hcl_umap}
 \title{UMAP Palette using HCL presets}
 \usage{
-hcl_umap(object, group_col, hcl_pal = "Dark 3", jitter = TRUE, comp = 3)
+hcl_umap(object, group_col = NULL, hcl_pal = "Dark 3", jitter = TRUE, comp = 3)
 }
 \arguments{
 \item{comp}{integer setting the color complementary to be used}
-}
-\value{
-
 }
 \description{
 UMAP Palette using HCL presets

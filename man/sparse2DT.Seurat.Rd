@@ -4,13 +4,10 @@
 \alias{sparse2DT.Seurat}
 \title{Convert a sparse matrix to a data.table}
 \usage{
-sparse2DT.Seurat(object)
+sparse2DT.Seurat(object, assay = "RNA", data = "data")
 }
 \arguments{
 \item{object}{Seurat object}
-}
-\value{
-
 }
 \description{
 Convert a sparse matrix to a data.table

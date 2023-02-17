@@ -21,10 +21,7 @@ HDBSCAN(
 )
 }
 \arguments{
-\item{prediction_data}{}
-}
-\value{
-
+\item{prediction_data}{not sure what this is for. Will update later.}
 }
 \description{
 Hierarchical Density-Based Spatial Clustering of Applications with Noise

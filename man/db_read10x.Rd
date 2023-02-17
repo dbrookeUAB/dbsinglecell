@@ -7,10 +7,7 @@
 db_read10x(path, return.sce = TRUE)
 }
 \arguments{
-\item{return.sce}{}
-}
-\value{
-
+\item{return.sce}{return result as SingleCellExperiment object}
 }
 \description{
 Read10x v3

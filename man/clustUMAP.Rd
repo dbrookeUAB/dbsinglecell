@@ -25,9 +25,6 @@ clustUMAP(
 \arguments{
 \item{verbose}{whether to print function messages}
 }
-\value{
-
-}
 \description{
 UWOT-UAMP: Clustering Specific UMAP
 }

@@ -9,9 +9,6 @@ pre_processing(object, species = "Homo sapiens", nfeatures = 3000, npcs = 50)
 \arguments{
 \item{npcs}{number of principle component dimensions to calculate}
 }
-\value{
-
-}
 \description{
 Seurat Preprocessing
 }

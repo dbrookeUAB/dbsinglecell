@@ -9,13 +9,6 @@ sparse2DT(matrix)
 \arguments{
 \item{matrix}{sparse matrix to be used}
 }
-\value{
-
-}
 \description{
 Convert a sparse matrix to a data.table
-}
-\examples{
-
-
 }

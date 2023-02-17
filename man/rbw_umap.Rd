@@ -9,9 +9,6 @@ rbw_umap(object, group_col, jitter = TRUE, comp = 3)
 \arguments{
 \item{comp}{integer setting the color complementary to be used}
 }
-\value{
-
-}
 \description{
 UMAP palette using rainbow colors
 }

@@ -9,9 +9,6 @@ read10x(path, return.sce = TRUE)
 \arguments{
 \item{return.sce}{return result as SingleCellExperiment object}
 }
-\value{
-
-}
 \description{
 Read10x v1
 }

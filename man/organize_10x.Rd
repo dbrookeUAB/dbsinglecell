@@ -9,9 +9,6 @@ organize_10x(x)
 \arguments{
 \item{x}{path containing the unorganized disaster}
 }
-\value{
-
-}
 \description{
 Reorganize another person's mess into a usable 10X dataset
 }

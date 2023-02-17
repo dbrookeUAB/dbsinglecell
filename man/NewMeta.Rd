@@ -9,9 +9,6 @@ NewMeta(object, meta, col.name)
 \arguments{
 \item{col.name}{name of the column for the new meta data}
 }
-\value{
-
-}
 \description{
 Easy Add Meta data to Seurat Object
 }

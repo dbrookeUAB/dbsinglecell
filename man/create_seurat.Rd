@@ -9,9 +9,6 @@ create_seurat(filepath, sample = NULL)
 \arguments{
 \item{sample}{sample name to use}
 }
-\value{
-
-}
 \description{
 Simple method for creating Seurat Objects
 }

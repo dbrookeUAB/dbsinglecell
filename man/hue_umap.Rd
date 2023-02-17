@@ -11,9 +11,6 @@ hue_umap(object, group_col, jitter = TRUE, comp = 3)
 
 \item{comp}{integer setting the color complementary to be used}
 }
-\value{
-
-}
 \description{
 UMAP Palette using soft hues
 }
