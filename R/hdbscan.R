@@ -56,7 +56,8 @@ HDBSCAN.default <- function(x,
                            min_samples = 1L,
                            cluster_selection_epsilon = 0.1,
                            cluster_selection_method = 'leaf',
-                           nThreads = parallel::detectCores()-1
+                           nThreads = parallel::detectCores()-1,
+                           return_full = FALSE
 ){
 
   hdbscan <- reticulate::import('hdbscan', delay_load = TRUE)
@@ -84,13 +85,19 @@ HDBSCAN.default <- function(x,
 
 
   result <- list(
-    labels = clusterer$labels_,
-    probabilities = clusterer$probabilities_,
-    cluster_persistance = clusterer$cluster_persistence_,
-    exemplars = clusterer$exemplars_,
-    outlier_scores = clusterer$outlier_scores_)
+      labels = clusterer$labels_,
+      probabilities = clusterer$probabilities_,
+      cluster_persistance = clusterer$cluster_persistence_,
+      exemplars = clusterer$exemplars_,
+      outlier_scores = clusterer$outlier_scores_)
 
-  return(result)
+
+
+  if(return_full==TRUE){
+    return(clusterer)
+  } else {
+    return(result)
+  }
 
 }
 
@@ -126,7 +133,8 @@ HDBSCAN.matrix <- function(x,
                     min_samples = 1L,
                     cluster_selection_epsilon = 0.1,
                     cluster_selection_method = 'leaf',
-                    nThreads = parallel::detectCores()-1
+                    nThreads = parallel::detectCores()-1,
+                    return_full = FALSE
 ){
 
   hdbscan <- reticulate::import('hdbscan', delay_load = TRUE)
@@ -160,8 +168,16 @@ HDBSCAN.matrix <- function(x,
     exemplars = clusterer$exemplars_,
     outlier_scores = clusterer$outlier_scores_)
 
-  return(result)
+  if(return_full==TRUE){
+    return(clusterer)
+  } else {
+    return(result)
+  }
 
+  reticulate::py_de
+  reticulate::py_run_string('del clusterer')
+  reticulate::py_gc <- import("gc")
+  reticulate::py_gc$collect()
 }
 
 
@@ -204,7 +220,8 @@ HDBSCAN.Seurat <- function(object,
                            cluster_selection_epsilon = 0.1,
                            cluster_selection_method = 'leaf',
                            nThreads = parallel::detectCores()-1,
-                           return_seurat = TRUE
+                           return_seurat = TRUE,
+                           return_full = FALSE
 ){
 
   if(is.null(dims)){
@@ -232,6 +249,8 @@ HDBSCAN.Seurat <- function(object,
   )
   reticulate::py_main_thread_func(clusterer$fit(x))
 
+
+
   result <- list(
     labels = factor(clusterer$labels_),
     probabilities = clusterer$probabilities_,
@@ -240,11 +259,25 @@ HDBSCAN.Seurat <- function(object,
     outlier_scores = clusterer$outlier_scores_)
 
   if(return_seurat){
-    object@misc$hdbscan <- result
-    object$cl <- result$labels
+    if(return_full==TRUE){
+      object@misc$hdbscan <- clusterer
+    } else {
+      object@misc$hdbscan <- result
+    }
+
+    object$hdbscan_clusters <- result$labels
+    object$outlier_scores <- result$outlier_scores
     return(object)
   } else {
-    return(result)
+
+    if(return_full==TRUE){
+      return(clusterer)
+    } else {
+      return(result)
+    }
+
+
+
   }
 reticulate::py_de
 reticulate::py_run_string('del clusterer')

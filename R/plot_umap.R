@@ -41,7 +41,7 @@ pal_umap <- function(object, group_col, base_col = "#1E90FF", jitter = TRUE){
 #' @export
 #'
 #' @examples
-hcl_umap <- function(object,group_col, hcl_pal = 'Dark 3',alpha = 0.7, jitter = TRUE,comp = 3){
+pal_hcl <- function(object,group_col, hcl_pal = 'Dark 3',alpha = 0.7, jitter = TRUE,comp = 3){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -69,7 +69,7 @@ hcl_umap <- function(object,group_col, hcl_pal = 'Dark 3',alpha = 0.7, jitter = 
 #' @export
 #'
 #' @examples
-rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.7){
+pal_rainbow <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.7){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -99,7 +99,7 @@ rbw_umap <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.7){
 #' @import colorspace
 #'
 #' @examples
-hue_umap <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.8){
+pal_hue <- function(object,group_col, jitter = TRUE,comp = 3, alpha = 0.8){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){
@@ -132,7 +132,7 @@ gg_color_hue <- function(n, alpha = 0.7) {
 #' @export
 #'
 #' @examples
-gg_umap <- function(object,group_col, jitter = TRUE,comp = 3,alpha = 0.7){
+pal_ggplot <- function(object,group_col, jitter = TRUE,comp = 3,alpha = 0.7){
   col_levels <- object@meta.data[[group_col]]
   n <- length(unique(col_levels))
   if("-1" %in% col_levels){

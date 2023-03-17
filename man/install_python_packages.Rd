@@ -2,7 +2,7 @@
 % Please edit documentation in R/reticulate_helpers.R
 \name{install_python_packages}
 \alias{install_python_packages}
-\title{Install python packages to use \code{HDBSCAN} and \code{umap-learn}}
+\title{Install python packages to use \code{HDBSCAN}, \code{umap-learn}, and \code{PaCMAP}}
 \usage{
 install_python_packages(method = "auto", conda = "auto")
 }
@@ -10,5 +10,5 @@ install_python_packages(method = "auto", conda = "auto")
 \item{conda}{}
 }
 \description{
-Install python packages to use \code{HDBSCAN} and \code{umap-learn}
+Install python packages to use \code{HDBSCAN}, \code{umap-learn}, and \code{PaCMAP}
 }

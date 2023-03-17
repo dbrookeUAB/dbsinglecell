@@ -72,10 +72,14 @@ read10x_atlas <- function(filepaths, project = 'scRNAseq', meta = NULL){
 }
 
 
-#' Read10x (v1)
+#' Fast Import of 10X Data
 #'
+#' @param return Set the format for the imported data. By default, 10X data is imported as a sparse matrix (`return='sparse'`), yet it can also return it as either a `SingleCellExperiment` (`return='sce'`) or  `SeuratObject` (`return='Seurat`).
+#' @param gene_col The column position to
+#' @param barcode_col
+#' @param seurat_project
+#' @param QC
 #' @param path
-#' @param return.sce  return result as SingleCellExperiment object
 #'
 #' @return
 #' @export
@@ -84,49 +88,70 @@ read10x_atlas <- function(filepaths, project = 'scRNAseq', meta = NULL){
 #' @import SingleCellExperiment
 #'
 #' @examples
-db_read10x  <- function(path, return.sce = TRUE){
+db_read10x <- function(path,
+                       return = 'Seurat',
+                       gene_col = 2,
+                       barcode_col = 1,
+                       seurat_project = basename(path),
+                       QC = TRUE
+){
+
   fl <- dir(path)
 
   # reads in matrix file ----------------------------------------------------
-  mat <- data.table::fread(file.path(path,fl[grepl('^matrix.mtx',fl)]),
-                           skip = 3,
-                           col.names = c('i','j','value'),
-                           colClasses = c('integer','integer','integer'),
-                           header = FALSE)
+  mat <- data.table::fread(
+    file.path(path, fl[grepl('^matrix.mtx', fl)]),
+    skip = 3,
+    col.names = c('i', 'j', 'value'),
+    key = c('i', 'j'),
+    colClasses = c('integer', 'integer', 'integer'),
+    header = FALSE
+  )
 
   # imports barcode ---------------------------------------------------------
-  barcode <- data.table::fread(file.path(path, fl[grepl('^barcodes.tsv',fl)]),
+  barcode <- data.table::fread(file.path(path, fl[grepl('^barcodes.tsv', fl)]),
                                header = FALSE,
-                               colClasses = 'character')$V1
+                               colClasses = 'character')[[barcode_col]]
 
   # imports gene ------------------------------------------------------------
-  gene<- data.table::fread(
-    file.path(path,fl[grepl('^[gf][e][na][te].+.tsv',fl)]),
-    header = FALSE)$V1
+  GENE <- data.table::fread(file.path(path, fl[grepl('^[gf][e][na][te].+.tsv', fl)]),
+                            header = FALSE)
 
+  gene <- GENE[[gene_col]]
 
   # duplicate gene names for row names --------------------------------------
 
-  if(!all(duplicated(gene)==FALSE)){
-    dg <- data.table(
-      position = which(duplicated(gene)),
-      name = gene[duplicated(gene)])[,N:=.N,name][]
-    dg[,new.name:=paste0(name,'.',1:.N), name]
+  if (any(duplicated(gene) == TRUE)) {
+    dg <- data.table(position = which(duplicated(gene)),
+                     name = gene[duplicated(gene)])[, N := .N, name][]
+    dg[, new.name := paste0(name, '.', 1:.N), name]
     gene[dg$position] <- dg$new.name
   }
-  max_i <- max(mat$i)
-  res <-  Matrix::sparseMatrix(
+
+
+  # creates sparse matrix ---------------------------------------------------
+
+  COUNTS <-  Matrix::sparseMatrix(
     i =  mat$i,
     j = mat$j,
     x = mat$value,
-    dimnames = list(gene[1:max_i],barcode))
+    dimnames = list(gene[1:(max(mat$i))], barcode[1:(max(mat$j))])
+  )
 
-  if(return.sce){
-    SingleCellExperiment::SingleCellExperiment(assays = list(counts = res))
-  } else {
-    return(gene)
+  # object creation ---------------------------------------------------------
+
+  #  Seurat
+  if (return == 'Seurat') {
+    res <- Seurat::RenameCells(Seurat::CreateSeuratObject(counts = COUNTS, project = seurat_project), add.cell.id = basename(path))
+
+    #  SingleCellExperiment
+  } else if (return == 'sce') {
+    res <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = COUNTS))
+  } else if (return == 'sparse') {
+    res <- COUNTS
   }
 
+  return(res)
 }
 
 

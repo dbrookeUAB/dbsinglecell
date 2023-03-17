@@ -17,7 +17,8 @@
   min_samples = 1L,
   cluster_selection_epsilon = 0.1,
   cluster_selection_method = "leaf",
-  nThreads = parallel::detectCores() - 1
+  nThreads = parallel::detectCores() - 1,
+  return_full = FALSE
 )
 }
 \arguments{
