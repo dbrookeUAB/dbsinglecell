@@ -6,6 +6,7 @@
 #' @param seurat_project
 #' @param QC
 #' @param path
+#' @param trim_fat
 #'
 #' @return
 #' @export
@@ -19,11 +20,14 @@ db_read10x <- function(path,
                        gene_col = 2,
                        barcode_col = 1,
                        seurat_project = basename(path),
-                       QC = TRUE
+                       QC = TRUE,
+                       trim_fat = FALSE
 ){
 
+  message_section('Starting db_read10x')
   fl <- dir(path)
-
+  message_task('Importing files')
+  message_append('matrix.mtx')
   # reads in matrix file ----------------------------------------------------
   mat <- data.table::fread(
     file.path(path, fl[grepl('^matrix.mtx', fl)]),
@@ -32,30 +36,34 @@ db_read10x <- function(path,
     key = c('i', 'j'),
     colClasses = c('integer', 'integer', 'integer'),
     header = FALSE,
-    integer64 = 'numeric'
+    integer64 = 'numeric',
+    nThread = parallel::detectCores(),
+    showProgress = TRUE
   )
 
+  message_append('barcodes.tsv')
   # imports barcode ---------------------------------------------------------
   barcode <- data.table::fread(file.path(path, fl[grepl('^barcodes.tsv', fl)]),
                                header = FALSE,
                                colClasses = 'character')[[barcode_col]]
-
+  message_append('features.tsv')
   # imports gene ------------------------------------------------------------
   GENE <- data.table::fread(file.path(path, fl[grepl('^[gf][e][na][te].+.tsv', fl)]),
                             header = FALSE)
 
   gene <- GENE[[gene_col]]
 
+  message_append('done')
   # duplicate gene names for row names --------------------------------------
 
   if (any(duplicated(gene) == TRUE)) {
-    dg <- data.table(position = which(duplicated(gene)),
+    dg <- data.table::data.table(position = which(duplicated(gene)),
                      name = gene[duplicated(gene)])[, N := .N, name][]
     dg[, new.name := paste0(name, '.', 1:.N), name]
     gene[dg$position] <- dg$new.name
   }
 
-
+  message_task('Assembling sparse matrix')
   # creates sparse matrix ---------------------------------------------------
 
   COUNTS <-  Matrix::sparseMatrix(
@@ -64,20 +72,27 @@ db_read10x <- function(path,
     x = mat$value,
     dimnames = list(gene[1:(max(mat$i))], barcode[1:(max(mat$j))])
   )
+  if(trim_fat==TRUE){
+    COUNTS <- COUNTS[Matrix::rowSums(COUNTS)!=0,]
+  }
+
 
   # object creation ---------------------------------------------------------
 
   #  Seurat
   if (return == 'Seurat') {
+    message_task('Creating Seurat Object')
     res <- Seurat::RenameCells(Seurat::CreateSeuratObject(counts = COUNTS, project = seurat_project), add.cell.id = basename(path))
 
     #  SingleCellExperiment
   } else if (return == 'sce') {
+    message_task('Creating SingleCellExperiemtn Object')
     res <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = COUNTS))
   } else if (return == 'sparse') {
     res <- COUNTS
   }
 
+  message_task('done')
   return(res)
 }
 
@@ -96,9 +111,12 @@ db_read_alevin  <- function(path = '.', return = 'Seurat'){
   # reads in matrix file ----------------------------------------------------
   mat <- data.table::fread(file.path(DIR,'quants_mat.mtx'),
                            skip = 3,
+                           showProgress = TRUE,
                            col.names = c('i','j','value'),
                            colClasses = c('integer','integer','integer'),
-                           header = FALSE)
+                           header = FALSE,
+                           nThread = parallel::detectCores()
+                           )
   # data.table::setcolorder(mat, 'i')
   # imports barcode ---------------------------------------------------------
   barcode <- readLines(file.path(DIR, 'quants_mat_rows.txt'))
@@ -151,10 +169,13 @@ db_read_mtx  <- function(mtx, features, cells, return = 'matrix', transpose_mtx 
 
   # reads in matrix file ----------------------------------------------------
   mat <- data.table::fread(mtx,
+                           showProgress = TRUE,
                            skip = 3,
                            col.names = c('i','j','value'),
                            colClasses = c('integer','integer','integer'),
-                           header = FALSE)
+                           header = FALSE,
+                           nThread = parallel::detectCores() )
+
   # data.table::setcolorder(mat, 'i')
   # imports barcode ---------------------------------------------------------
   barcode <- readLines(features)

@@ -1,3 +1,11 @@
+#' Internal Function Messages
+#'
+#' @param text
+#'
+#' @return
+#' @export
+#'
+#' @examples
 message_section <- function(text){
   n <- ceiling(options()$width)
 
@@ -11,6 +19,14 @@ message_section <- function(text){
   cat(rep('-',22), "\n\n",sep = '')
 }
 
+#' Internal Function Messages
+#'
+#' @param text
+#'
+#' @return
+#' @export
+#'
+#' @examples
 message_task <- function(text){
   n <- ceiling(options()$width)
 
@@ -22,6 +38,14 @@ message_task <- function(text){
   cat(sprintf(z,Sys.time(), substr(text, 1,n)))
 }
 
+#' Internal Function Messages
+#'
+#' @param text
+#'
+#' @return
+#' @export
+#'
+#' @examples
 message_append <- function(text){
   n <- ceiling(options()$width)-1
 
