@@ -50,8 +50,6 @@
 )
 }
 \arguments{
-\item{n_neighbors}{Controls the balance between local and global structure. Low values will favor local structure while large values will favor global structure.}
-
 \item{return_seurat}{}
 }
 \description{

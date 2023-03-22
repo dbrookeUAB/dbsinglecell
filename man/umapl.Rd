@@ -7,9 +7,7 @@
 umapl(object, ...)
 }
 \arguments{
-\item{embedding}{Matrix umap will be performed on.}
-
-\item{nThreads}{number of parallel threads to be used}
+\item{nThreads}{}
 }
 \description{
 umap-learn (python implementation of umap)

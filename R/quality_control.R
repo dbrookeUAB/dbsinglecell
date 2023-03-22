@@ -52,3 +52,14 @@ db_qc_cell <- function(object){
   setkey(result,barcodes)
   return(result)
 }
+
+
+Outliers <- function(object){
+  t1 <- scuttle::isOutlier(object$nFeature_RNA/log(object$nCount_RNA), log = T)
+  t2 <- scuttle::isOutlier(log(object$nCount_RNA)/object$nFeature_RNA,log = T)
+  t3 <- scuttle::isOutlier(object$nFeature_RNA)
+  t4 <- scuttle::isOutlier(log(object$nCount_RNA),log = F)
+
+  res <- t1|t2|t3|t4
+  return(res)
+}

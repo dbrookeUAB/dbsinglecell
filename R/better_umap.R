@@ -1,6 +1,6 @@
 #' umap-learn (python implementation of umap)
 #'
-#' @param embedding   Matrix umap will be performed on.
+#' @param embedding
 #' @param a
 #' @param angular_rp_forest
 #' @param b
@@ -30,7 +30,7 @@
 #' @param transform_seed
 #' @param unique
 #' @param verbose
-#' @param nThreads  number of parallel threads to be used
+#' @param nThreads
 #'
 #' @return
 #' @export
@@ -193,7 +193,7 @@ umapl.matrix <- function(embedding,
 #' @param min_dist
 #' @param n_components
 #' @param n_epochs
-#' @param n_neighbors  Controls the balance between local and global structure. Low values will favor local structure while large values will favor global structure.
+#' @param n_neighbors
 #' @param negative_sample_rate
 #' @param output_metric
 #' @param output_metric_kwds
