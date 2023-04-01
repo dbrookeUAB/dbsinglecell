@@ -1,34 +1,3 @@
-#' Custom Palette for UMAP
-#'
-#' @param object
-#' @param group_col
-#' @param base_col
-#' @param jitter  randomize the colors
-#'
-#' @return
-#' @export
-#' @importFrom colortools setColors
-#' @import viridis
-#'
-#' @examples
-#'
-pal_umap <- function(object, group_col, base_col = "#1E90FF", jitter = TRUE){
-  col_levels <- object@meta.data[[group_col]]
-  n <- length(unique(col_levels))
-  if("-1" %in% col_levels){
-    pal <- c('gray')
-  } else {
-    pal <- c()
-  }
-
-
-  if(jitter){
-    new_order <- unlist(sapply(1:5, function(x) seq(x, n,5)))
-  }
-  pal <- c(pal, colortools::setColors(base_col,n))[new_order]
-  return(pal)
-}
-
 #' UMAP Palette using HCL presets
 #'
 #' @param object

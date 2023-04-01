@@ -4,10 +4,10 @@
 \alias{message_section}
 \title{Internal Function Messages}
 \usage{
-message_section(text)
+message_section(text, verbose = TRUE)
 }
 \arguments{
-\item{text}{}
+\item{verbose}{}
 }
 \description{
 Internal Function Messages

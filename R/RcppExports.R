@@ -5,10 +5,6 @@ matrix_rollsum2 <- function(x, n, margin) {
     .Call('_dbsinglecell_matrix_rollsum2', PACKAGE = 'dbsinglecell', x, n, margin)
 }
 
-test <- function(x) {
-    .Call('_dbsinglecell_test', PACKAGE = 'dbsinglecell', x)
-}
-
 substr_r <- function(str, n) {
     .Call('_dbsinglecell_substr_r', PACKAGE = 'dbsinglecell', str, n)
 }

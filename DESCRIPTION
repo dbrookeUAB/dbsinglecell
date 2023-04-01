@@ -12,7 +12,7 @@ Maintainer: Dewey Brooke <dbrooke@uab.edu>
 Description: A collection of functions for processing single-cell RNAseq data that I am using constantly. I created this package to make these functions portable for myself. Use at your own risk.  
 License: GPL (>= 2)
 Imports: Rcpp, Matrix, data.table, doParallel, foreach, progress,
-        Seurat, colorspace, crayon, snow, doSNOW, colortools, stringr,
+        Seurat, colorspace, crayon, snow, doSNOW, stringr,
         uwot, viridis, SingleCellExperiment, reticulate
 LinkingTo: Rcpp, RcppArmadillo
 Roxygen: list(markdown = TRUE)
@@ -20,5 +20,7 @@ RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
 LazyData: true
 NeedsCompilation: yes
-Packaged: 2022-11-22 18:45:33 UTC; deweybrooke
+Packaged: 2023-03-25 04:52:14 UTC; deweybrooke
 Author: Dewey Brooke [aut, cre] (<https://orcid.org/0000-0003-4290-3809>)
+Config/reticulate: list( packages = list( list(package = "umap"),
+        list(package = "hdbscan") ) )

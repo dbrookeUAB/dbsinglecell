@@ -80,7 +80,7 @@ create_seurat <- function(filepath, sample = NULL ){
 #'
 #' @examples
 pre_processing <- function(object, species = 'Homo sapiens', nfeatures = 3000, npcs = 50, filters  = list(nFeature = c(200,3000), percent.mt = 20), verbose = TRUE){
-  message_section('Start')
+  message_section('Start', verbose = verbose)
   if(species == 'Homo sapiens'){
     mt_pattern <- '^MT-'
   } else {
@@ -91,17 +91,17 @@ pre_processing <- function(object, species = 'Homo sapiens', nfeatures = 3000, n
                                          pattern = mt_pattern,
                                          col.name = "percent.mt")
 
-  message_task('Filtering out low quality cells and doublets (1/5)')
+  message_task('Filtering out low quality cells and doublets (1/5)', verbose = verbose)
 
   # Removing low quality cells and doublets
   object <- subset(object,percent.mt < filters[['percent.mt']] & nFeature_RNA > filters[['nFeature']][1] & nFeature_RNA <  filters[['nFeature']][2] )
 
-  message_task('Normalizing data (2/5)')
+  message_task('Normalizing data (2/5)', verbose = verbose)
   # Normalization
   object<- Seurat::NormalizeData(object, verbose = verbose)
   # Variable Features
 
-  message_task(paste('Finding',nfeatures,'most variable fatures (3/5)'))
+  message_task(paste('Finding',nfeatures,'most variable fatures (3/5)'), verbose = verbose)
 
   object<- Seurat::FindVariableFeatures(object, selection.method = "vst", nfeatures = nfeatures, verbose = verbose)
   data('cc.genes.updated.2019', package = 'Seurat')
@@ -119,12 +119,12 @@ pre_processing <- function(object, species = 'Homo sapiens', nfeatures = 3000, n
   # difference between s and g2m scores
   object$CC.Difference <-object$S.Score -object$G2M.Score
 
-  message_task('Scaling data (4/5)')
+  message_task('Scaling data (4/5)', verbose = verbose)
   # Scaling Data ----
   object<- Seurat::ScaleData(object,vars.to.regress = c('CC.Difference','percent.mt'), verbose = verbose)
 
-  message_task('Performing PCA (5/5)')
-  message_append(paste('using npcs =',npcs))
+  message_task('Performing PCA (5/5)', verbose = verbose)
+  message_append(paste('using npcs =',npcs), verbose = verbose)
   # PCA ----
   object<- Seurat::RunPCA(
     object,
@@ -132,7 +132,7 @@ pre_processing <- function(object, species = 'Homo sapiens', nfeatures = 3000, n
     npcs = npcs,
     verbose = verbose)
   return(object)
-  message_section('Finished')
+  message_section('Finished', verbose = verbose)
 
 }
 

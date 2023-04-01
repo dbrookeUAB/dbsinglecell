@@ -2,6 +2,7 @@
 # dbsinglecell
 
 <!-- badges: start -->
+[![R-CMD-check](https://github.com/dbrookeUAB/dbsinglecell/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/dbrookeUAB/dbsinglecell/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
 A collection of functions for processing single-cell RNAseq data that I am using constantly. I created this package to make these functions portable for myself. Use at your own risk.  

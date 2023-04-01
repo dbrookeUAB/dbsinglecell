@@ -21,39 +21,44 @@ db_read10x <- function(path,
                        barcode_col = 1,
                        seurat_project = basename(path),
                        QC = TRUE,
-                       trim_fat = FALSE
+                       trim_fat = FALSE,
+                       verbose = TRUE
 ){
 
-  message_section('Starting db_read10x')
+    THREADS <- parallel::detectCores()
+    data.table::setDTthreads(threads =  THREADS)
+  message_section('Starting db_read10x', verbose = verbose)
   fl <- dir(path)
-  message_task('Importing files')
-  message_append('matrix.mtx')
+  message_task('Importing files', verbose = verbose)
+  message_append('matrix.mtx', verbose = verbose)
   # reads in matrix file ----------------------------------------------------
   mat <- data.table::fread(
-    file.path(path, fl[grepl('^matrix.mtx', fl)]),
+    file.path(path, fl[grepl('matrix.mtx$', fl)|grepl('matrix.mtx.gz$', fl)]),
     skip = 3,
     col.names = c('i', 'j', 'value'),
     key = c('i', 'j'),
     colClasses = c('integer', 'integer', 'integer'),
     header = FALSE,
     integer64 = 'numeric',
-    nThread = parallel::detectCores(),
+    nThread = THREADS,
     showProgress = TRUE
   )
 
-  message_append('barcodes.tsv')
+  message_append('barcodes.tsv', verbose = verbose)
   # imports barcode ---------------------------------------------------------
-  barcode <- data.table::fread(file.path(path, fl[grepl('^barcodes.tsv', fl)]),
+  barcode <- data.table::fread(file.path(path, fl[grepl('barcodes.tsv$', fl)|grepl('barcodes.tsv.gz$', fl)]),
+                               nThread = THREADS,
                                header = FALSE,
                                colClasses = 'character')[[barcode_col]]
-  message_append('features.tsv')
+  message_append('features.tsv', verbose = verbose)
   # imports gene ------------------------------------------------------------
-  GENE <- data.table::fread(file.path(path, fl[grepl('^[gf][e][na][te].+.tsv', fl)]),
+  GENE <- data.table::fread(file.path(path, fl[grepl('[gf][e][na][te].+.tsv$', fl)|grepl('[gf][e][na][te].+.tsv.gz$', fl)]),
+                            nThread = THREADS,
                             header = FALSE)
 
   gene <- GENE[[gene_col]]
 
-  message_append('done')
+  message_append('done', verbose = verbose)
   # duplicate gene names for row names --------------------------------------
 
   if (any(duplicated(gene) == TRUE)) {
@@ -63,7 +68,7 @@ db_read10x <- function(path,
     gene[dg$position] <- dg$new.name
   }
 
-  message_task('Assembling sparse matrix')
+  message_task('Assembling sparse matrix', verbose = verbose)
   # creates sparse matrix ---------------------------------------------------
 
   COUNTS <-  Matrix::sparseMatrix(
@@ -81,18 +86,22 @@ db_read10x <- function(path,
 
   #  Seurat
   if (return == 'Seurat') {
-    message_task('Creating Seurat Object')
+    message_task('Creating Seurat Object', verbose = verbose)
     res <- Seurat::RenameCells(Seurat::CreateSeuratObject(counts = COUNTS, project = seurat_project), add.cell.id = basename(path))
 
     #  SingleCellExperiment
   } else if (return == 'sce') {
-    message_task('Creating SingleCellExperiemtn Object')
+    message_task('Creating SingleCellExperiemtn Object', verbose = verbose)
     res <- SingleCellExperiment::SingleCellExperiment(assays = list(counts = COUNTS))
   } else if (return == 'sparse') {
     res <- COUNTS
+  } else if(return =='dbsc'){
+    res <- data.table::data.table(gene_name = gene[mat$i],
+                                  barcodes = barcode[mat$j],
+                                  count = mat$value, key = c('gene_name','barcodes'))
   }
 
-  message_task('done')
+  message_task('done', verbose = verbose)
   return(res)
 }
 
@@ -213,5 +222,92 @@ db_read_mtx  <- function(mtx, features, cells, return = 'matrix', transpose_mtx 
   }
 
 }
+
+#' Fast Import of 10X Data (experimental)
+#'
+#' @param path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+#' db_read10x_experimental  <- function(path){
+#'   fl <- dir(path)
+#'
+#'   # reads in matrix file ----------------------------------------------------
+#'   mat <- data.table::fread(file.path(path,fl[grepl('^matrix.mtx',fl)]),
+#'                            skip = 3,
+#'                            col.names = c('i','j','value'),
+#'                            key = c('i','j'),
+#'                            colClasses = c('integer','integer','integer'),
+#'                            header = FALSE)
+#'
+#'   # imports barcode ---------------------------------------------------------
+#'   barcode <- data.table::fread(file.path(path, fl[grepl('^barcodes.tsv',fl)]),
+#'                                header = FALSE,
+#'                                colClasses = 'character')$V1
+#'
+#'   # imports gene ------------------------------------------------------------
+#'   gene<- data.table::fread(
+#'     file.path(path,fl[grepl('^[gf][e][na][te].+.tsv',fl)]),
+#'     header = FALSE)
+#'   colnames(gene) <- c('gene_id','gene_name','gene_type')[1:ncol(gene)]
+#'
+#'
+#'   # duplicate gene names for row names --------------------------------------
+#'
+#'   # if(!all(duplicated(gene[['gene_id']])==FALSE)){
+#'   #   dg <- data.table(
+#'   #     position = which(duplicated(gene)),
+#'   #     name = gene[['gene_id']][duplicated(gene[['gene_id']])])[,N:=.N,name][]
+#'   #   dg[,new.name:=paste0(name,'.',1:.N), name]
+#'   #   gene[['gene_id']][dg$position] <- dg$new.name
+#'   # }
+#'
+#'   res <- data.table::data.table(gene_id = gene[['gene_id']][mat$i],
+#'                                 gene_name = gene[['gene_name']][mat$i],
+#'                                 barcodes = barcode[mat$j],
+#'                                 count = mat$value, key = c('gene_id','barcodes'))
+#'   res$gene_id <- as.factor(res$gene_id)
+#'   res$gene_name <- as.factor(res$gene_name)
+#'   res$barcodes <- as.factor(res$barcodes)
+#'   data.table::setkey(res, gene_name, barcodes)
+#'
+#'   return(res)
+#'
+#' }
+#'
+#'
+#'
+#'
+#'
+#' #' Merge dbsc objects
+#' #'
+#' #' @param ...
+#' #' @param return.DT
+#' #'
+#' #' @return
+#' #' @export
+#' #'
+#' #' @examples
+#' merge_dbsc <- function(..., return.DT = FALSE){
+#'   obj_list <- list(...)
+#'   if(length(obj_list)==1 && is.list(obj_list[[1]])){
+#'     result <- data.table::rbindlist(obj_list[[1]])
+#'   } else {
+#'     result <-   data.table::rbindlist(obj_list)
+#'   }
+#'   data.table::setkey(result, gene_name, barcodes)
+#'   if(return.DT==FALSE){
+#'     res <- Matrix::sparseMatrix(i = as.integer(result$gene_name), j = as.integer(result$barcodes), x = result$count, repr = 'C')
+#'     rownames(res) <- levels(result$gene_name)
+#'     colnames(res) <- levels(result$barcodes)
+#'     return(res)
+#'   } else {
+#'     return(result)
+#'   }
+#' }
+
+
 
 

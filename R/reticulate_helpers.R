@@ -3,13 +3,25 @@ scipy <- NULL
 hdbscan <- NULL
 umap <- NULL
 pacmap <- NULL
-
+#' onLoad
+#'
+#' @param libname
+#' @param pkgname
+#'
+#' @return
+#' @export
+#'
+#' @examples
 .onLoad <- function(libname, pkgname) {
+  # reticulate::configure_environment("dbsinglecell", force = TRUE)
+  reticulate::configure_environment(pkgname, force = TRUE)
+  # reticulate::use_condaenv(condaenv = 'r-reticulate')
   # use superassignment to update global reference to scipy
-  scipy <<- reticulate::import("scipy", delay_load = TRUE)
+  # test <<- reticulate::py_module_available('umap')
+  # scipy <<- reticulate::import('scipy', delay_load = TRUE)
   hdbscan <<- reticulate::import('hdbscan', delay_load = TRUE)
   umap <<- reticulate::import('umap', delay_load = TRUE)
-  #pacmap <<- reticulate::import('pacmap', delay_load = TRUE)
+  pacmap <<- reticulate::import('pacmap', delay_load = TRUE)
 
 }
 

@@ -4,10 +4,10 @@
 \alias{message_task}
 \title{Internal Function Messages}
 \usage{
-message_task(text)
+message_task(text, verbose = TRUE)
 }
 \arguments{
-\item{text}{}
+\item{verbose}{}
 }
 \description{
 Internal Function Messages

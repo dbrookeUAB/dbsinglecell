@@ -9,10 +9,10 @@ db_qc(
   species = "Mus musculus",
   subset = FALSE,
   mito = 10,
-  ribo = 2.5,
+  ribo = 1,
   Complexity = 0.8,
   min.features = 500,
-  cell_cycle = TRUE
+  cell_cycle = FALSE
 )
 }
 \arguments{

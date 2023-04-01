@@ -14,7 +14,7 @@
 #' @examples
 db_qc <- function(object,
                   species = 'Mus musculus',
-                  subset = FALSE, mito = 10,ribo = 2.5,Complexity = 0.8, min.features = 500, cell_cycle = TRUE){
+                  subset = FALSE, mito = 10,ribo = 1,Complexity = 0.8, min.features = 500, cell_cycle = FALSE){
   if(species=='Mus musculus'){
     mt_genes <- '^mt-'
     ribo_genes <- '^Rp[sl]'
@@ -31,6 +31,10 @@ db_qc <- function(object,
   object[['complexity']] <- log10(object$nFeature_RNA)/log10(object$nCount_RNA)
 
   if(cell_cycle==TRUE){
+    if(!exists('cc.genes')){
+      data('cc.genes',package = 'dbsinglecell')
+    }
+
     object <- Seurat::CellCycleScoring(object = object,
                                        s.features = cc.genes[[species]]$s.genes,
                                        g2m.features = cc.genes[[species]]$g2m.genes)
@@ -38,7 +42,7 @@ db_qc <- function(object,
   }
 
   if(subset==TRUE){
-    object <- subset(object, percent.mt < mito & percent.ribo > ribo & complexity > Complexity & nFeature_RNA > min.features & !Outliers(object) & percent.mt > 0)
+    object <- subset(object, percent.mt < mito & percent.ribo > ribo & complexity > Complexity & nFeature_RNA > min.features & percent.mt > 0)
   }
   return(object)
 }

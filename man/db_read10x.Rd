@@ -11,7 +11,8 @@ db_read10x(
   barcode_col = 1,
   seurat_project = basename(path),
   QC = TRUE,
-  trim_fat = FALSE
+  trim_fat = FALSE,
+  verbose = TRUE
 )
 }
 \arguments{

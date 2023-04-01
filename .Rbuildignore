@@ -4,3 +4,5 @@
 ^docs$
 ^pkgdown$
 db_read10x_experimental.R
+^\.github$
+monocle_processing.R

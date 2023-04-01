@@ -24,17 +24,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// test
-NumericVector test(arma::sp_mat x);
-RcppExport SEXP _dbsinglecell_test(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< arma::sp_mat >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(test(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // substr_r
 std::string substr_r(std::string str, int n);
 RcppExport SEXP _dbsinglecell_substr_r(SEXP strSEXP, SEXP nSEXP) {
@@ -62,7 +51,6 @@ END_RCPP
 
 static const R_CallMethodDef CallEntries[] = {
     {"_dbsinglecell_matrix_rollsum2", (DL_FUNC) &_dbsinglecell_matrix_rollsum2, 3},
-    {"_dbsinglecell_test", (DL_FUNC) &_dbsinglecell_test, 1},
     {"_dbsinglecell_substr_r", (DL_FUNC) &_dbsinglecell_substr_r, 2},
     {"_dbsinglecell_substr_l", (DL_FUNC) &_dbsinglecell_substr_l, 2},
     {NULL, NULL, 0}
