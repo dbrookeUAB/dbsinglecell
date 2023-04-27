@@ -119,9 +119,10 @@ umapl.matrix <- function(embedding,
                          unique = FALSE,
                          verbose = TRUE,
                          nThreads = 3) {
-  Sys.setenv(OMP_NUM_THREADS = nThreads)
+
 
   UMAP <- reticulate::import('umap', delay_load = TRUE)
+  Sys.setenv(OMP_NUM_THREADS = nThreads)
   embds <- embedding
   reticulate::py_capture_output({
     reducer <- UMAP$UMAP(
@@ -268,8 +269,8 @@ umapl.Seurat <- function(object,
       Seurat::Embeddings(object, reduction = reduction)[,dims]
   }
 
-  Sys.setenv(OMP_NUM_THREADS = nThreads)
   message_task('defining parameters')
+  Sys.setenv(OMP_NUM_THREADS = nThreads)
   reticulate::py_capture_output({
     reducer <- UMAP$UMAP(
       a = a,
@@ -340,16 +341,16 @@ umapl.Seurat <- function(object,
 # }
 
 
-# global reference to scipy (will be initialized in .onLoad)
-HDBSCAN <- NULL
-UMAP <- NULL
-
-.onLoad <- function(libname, pkgname) {
-  # use superassignment to update global reference to scipy
-  HDBSCAN <<- reticulate::import(c("hdbscan"), delay_load = TRUE)
-  UMAP <<- reticulate::import(c('umap-learn'), delay_load = TRUE)
-}
-
+# # global reference to scipy (will be initialized in .onLoad)
+# HDBSCAN <- NULL
+# UMAP <- NULL
+#
+# .onLoad <- function(libname, pkgname) {
+#   # use superassignment to update global reference to scipy
+#   HDBSCAN <<- reticulate::import(c("hdbscan"), delay_load = TRUE)
+#   UMAP <<- reticulate::import(c('umap-learn'), delay_load = TRUE)
+# }
+#
 
 
 

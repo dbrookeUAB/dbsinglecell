@@ -4,17 +4,17 @@ Title: Dewey Brooke's Single-Cell Toolkit
 Version: 1.1
 Date: 2022-03-17
 Authors@R: c(
-    person("Dewey", "Brooke", , "dbrooke@uab.edu", role = c("aut", "cre"), 
+    person("Dewey", "Brooke", , "me@deweybrooke.org", role = c("aut", "cre"), 
       comment = c(ORCID = "0000-0003-4290-3809")
     )
     )
-Maintainer: Dewey Brooke <dbrooke@uab.edu>
+Maintainer: Dewey Brooke <me@deweybrooke.org>
 Description: A collection of functions for processing single-cell RNAseq data that I am using constantly. I created this package to make these functions portable for myself. Use at your own risk.  
 License: GPL (>= 2)
 Imports: Rcpp, Matrix, data.table, doParallel, foreach, progress,
         Seurat, colorspace, crayon, snow, doSNOW, stringr,
         uwot, viridis, SingleCellExperiment, reticulate
-LinkingTo: Rcpp, RcppArmadillo
+LinkingTo: Rcpp
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.3
 Depends: R (>= 2.10)
@@ -22,5 +22,5 @@ LazyData: true
 NeedsCompilation: yes
 Packaged: 2023-03-25 04:52:14 UTC; deweybrooke
 Author: Dewey Brooke [aut, cre] (<https://orcid.org/0000-0003-4290-3809>)
-Config/reticulate: list( packages = list( list(package = "umap"),
-        list(package = "hdbscan") ) )
+Config/reticulate: list( packages = list( list(package = "umap-learn"),
+        list(package = "hdbscan"), list(package = 'umap') ) )
